@@ -1,0 +1,9 @@
+@mixin elevation($elevation: 1) {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-#{$elevation * 5}px);
+    box-shadow: 0 #{$elevation * 2}px #{$elevation * 4}px rgba(0, 0, 0, 0.1), 0 #{$elevation * 5}px #{$elevation * 10}px rgba(0, 0, 0, 0.2);
+  }
+}

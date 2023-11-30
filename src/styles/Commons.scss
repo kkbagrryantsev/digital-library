@@ -1,0 +1,42 @@
+@import "Colors";
+@import "Effects";
+
+@mixin font($family, $weight, $style) {
+  font-family: $family;
+  font-weight: $weight;
+  font-style: $style;
+}
+
+%droid-serif-regular {
+  @include font("Droid Serif", normal, normal);
+}
+
+%droid-serif-bold{
+  @include font('Droid Serif', bold, normal)
+}
+
+%droid-serif-italic{
+  @include font('Droid Serif', normal, italic)
+}
+
+%roboto-regular{
+  @include font('Roboto', normal, normal)
+}
+
+%roboto-bold{
+  @include font('Roboto', bold, normal)
+}
+
+%roboto-black{
+  @include font('Roboto', 900, normal)
+}
+
+$h1: 3.812rem;
+$h2: 2.938rem;
+$h3: 2.250rem;
+$h4: 1.688rem;
+$h5: 1.312rem;
+$h6: 1rem;
+$small: 0.750rem;
+
+
