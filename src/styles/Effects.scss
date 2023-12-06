@@ -1,3 +1,5 @@
+@import "Colors";
+
 @mixin elevation($elevation: 1) {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   position: relative;
@@ -5,5 +7,50 @@
   &:hover {
     transform: translateY(-#{$elevation * 5}px);
     box-shadow: 0 #{$elevation * 2}px #{$elevation * 4}px rgba(0, 0, 0, 0.1), 0 #{$elevation * 5}px #{$elevation * 10}px rgba(0, 0, 0, 0.2);
+  }
+}
+
+@mixin shadow($color: rgba(0, 0, 0, 0.1), $blur: 20px) {
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 1px 3px 1px;
+}
+
+@mixin multipleShapes() {
+  position: relative;
+  &::before,
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    border: 2px solid $bloody-red;
+    transition: all .25s ease-out;
+    box-sizing: border-box;
+  }
+  &::before {
+    background-color: transparent;
+    border: transparent;
+    top: 0;
+    left: 0;
+  }
+  &::after {
+    background-color: transparent;
+    border: transparent;
+    bottom: 0;
+    right: 0;
+  }
+  &.intendedToDelete {
+    &::before {
+      background-color: $bloody-red;
+      border: 2px solid $bloody-red;
+      display: initial;
+      top: 11px;
+      left: 15px;
+    }
+    &::after {
+      border: 2px solid $bloody-red;
+      bottom: 17px;
+      right: 15px;
+    }
   }
 }

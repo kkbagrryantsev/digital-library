@@ -5,6 +5,7 @@ import PageContent from '~/pages/template/PageContent.tsx'
 import AuthForm from '~/pages/template/components/AuthForm.tsx'
 
 import './styles/SearchPage.scss'
+import SearchPageContent from '~/pages/search-page/SearchPageContent.tsx'
 
 const SearchPage: React.FC = () => {
   return (
@@ -13,7 +14,7 @@ const SearchPage: React.FC = () => {
         <AuthForm />
       </PageHeader>
       <PageContent>
-        <div className={'root'}></div>
+        <SearchPageContent/>
       </PageContent>
     </Page>
   )

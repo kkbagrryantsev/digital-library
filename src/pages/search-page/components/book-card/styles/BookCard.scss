@@ -1,0 +1,76 @@
+@import "../../../../../styles/Commons";
+
+.clickable {
+  width: fit-content;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.bookCard {
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 20px;
+  border: 1px solid $light-gray;
+  @include elevation(1);
+  @include shadow();
+}
+
+.bookCardHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.bookCardHeader h5 {
+  @extend %droid-serif-bold-italic;
+  color: $gray;
+}
+
+.bookCardHeader__credentials h4 {
+  @extend %roboto-regular;
+}
+
+.bookCardHeader__credentials h3 {
+  @extend %roboto-black;
+}
+
+.bookCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.bookCardContent h5 {
+  @extend %droid-serif-regular;
+}
+
+.bookCardContent h4 {
+  width: 100%;
+  text-align: right;
+  @extend %roboto-bold;
+}
+
+.bookCardContent__divider {
+  height: 1.6px;
+  width: 100%;
+  background-color: black;
+}
+
+.bookCardContent__divider_modThick {
+  @extend .bookCardContent__divider;
+  height: 2px;
+}
+
+.bookCardContent__divider_modShort {
+  @extend .bookCardContent__divider;
+  width: 125px;
+}
+
+.bookCardActions {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

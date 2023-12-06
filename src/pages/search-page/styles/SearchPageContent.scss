@@ -1,0 +1,14 @@
+.searchPageContent {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+  width: 66%;
+  max-width: 1024px;
+  min-width: 800px;
+  padding: 0 10rem;
+  box-sizing: border-box;
+
+  &:has(.bookCard) {
+    margin: 80px;
+  }
+}

@@ -1,0 +1,13 @@
+@import "../../../../styles/Commons";
+
+.bookCardAction {
+  width: fit-content;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.bookCardAction_modDanger {
+  @extend .bookCardAction;
+  color: $bloody-red;
+}

@@ -1,0 +1,28 @@
+@import "../../../../styles/Commons";
+
+.searchBar {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.searchBar h3 {
+  @extend %roboto-regular;
+}
+
+.searchBar__textarea {
+  border: none;
+  color: $charcoal;
+  font-size: $h2;
+  @extend %roboto-black;
+  resize: none;
+  overflow-y: hidden;
+}
+
+.searchBar__textarea::placeholder {
+  color: $light-gray;
+}
+
+.searchBar__textarea:focus {
+  outline: none;
+}

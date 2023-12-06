@@ -1,0 +1,52 @@
+@import "../../../styles/Commons";
+
+.bookPageContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 87px;
+  //max-width: 1024px;
+  //min-width: 800px;
+  padding: 100px 100px;
+  box-sizing: border-box;
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  width: 100%;
+}
+
+.author {
+  @extend h4;
+  @extend %roboto-bold;
+}
+
+.title {
+  @extend h1;
+  @extend %roboto-black;
+}
+
+.genre {
+  @extend h4;
+  @extend %droid-serif-italic;
+  color: $gray;
+}
+
+.description {
+  @extend h4;
+  @extend %droid-serif-regular;
+  width: 50%;
+  min-width: 700px;
+}
+
+.isbn {
+  @extend h4;
+  @extend %droid-serif-regular;
+  color: $gray;
+}
+
+.text_modDanger {
+  color: $bloody-red;
+}
