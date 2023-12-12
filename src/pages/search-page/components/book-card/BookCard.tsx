@@ -2,7 +2,7 @@ import React from 'react'
 import './styles/BookCard.scss'
 import classnames from 'classnames'
 import PseudoElementShiftAnimationContainer from '~/components/pseudo-element-shift-animation-container/PseudoElementShiftAnimationContainer.tsx'
-import DeleteBookCard from '~/pages/search-page/components/book-card-action/actions/DeleteBookCard.tsx'
+import { DeleteBookCardAction } from '~/pages/search-page/components/book-card-action/actions/DeleteBookCardAction.tsx'
 import DownloadBookCard from '~/pages/search-page/components/book-card-action/actions/DownloadBookCard.tsx'
 
 interface BookCardProps {
@@ -45,8 +45,9 @@ const BookCard: React.FC<BookCardProps> = ({
             )}
           />
           <div className={'bookCard__actions'}>
+            {/* TODO Fix actions */}
             <DownloadBookCard />
-            <DeleteBookCard />
+            <DeleteBookCardAction />
           </div>
           <h4>{sequenceNumber}</h4>
           <div

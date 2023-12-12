@@ -14,6 +14,10 @@ interface BookPageProps {
 // @ts-expect-error
 // noinspection JSUnusedLocalSymbols
 const BookPage: React.FC<BookPageProps> = ({ id }: BookPageProps) => {
+  // const updateBook = useBoundStore(state => state.updateBook)
+
+  // updateBook()
+
   return <Page>
     <PageHeader>
       {/* //TODO Add return button */}

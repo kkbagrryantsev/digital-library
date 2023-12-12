@@ -4,4 +4,8 @@ enum LoadingState {
   LOADED = 'loaded',
 }
 
+// const values = ['a', 'b'] as const
+//
+// type ValuesType = typeof values[number]
+
 export default LoadingState

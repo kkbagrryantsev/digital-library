@@ -27,7 +27,6 @@ const SearchPageContent: React.FC = () => {
         sequenceNumber={2}
        />
        </div>
-
     </main>
   )
 }

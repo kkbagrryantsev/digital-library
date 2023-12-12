@@ -4,27 +4,15 @@ import {
 } from '~/components/pseudo-element-shift-animation-container/PseudoElementShiftAnimationContainer.tsx'
 import BookCardAction from '~/pages/search-page/components/book-card-action/BookCardAction.tsx'
 
-const DeleteBookCardAction: React.FC = () => {
-  const { id } = useContext(PseudoElementShiftAnimationContext)
+export const DeleteBookCardAction: React.FC = () => {
+  const { setIsFocused } = useContext(PseudoElementShiftAnimationContext)
 
   const handleMouseEnter = (): void => {
-    const container = document.getElementById(
-      `pseudo-element-shift-animation-container-${id}`
-    )
-    console.log(id)
-    if (container !== null) {
-      container.classList.add('intendedToDelete')
-    }
+    setIsFocused(true)
   }
 
   const handleMouseLeave = (): void => {
-    const container = document.getElementById(
-      `pseudo-element-shift-animation-container-${id}`
-    )
-    if (container !== null) {
-      console.log(id)
-      container.classList.remove('intendedToDelete')
-    }
+    setIsFocused(false)
   }
 
   const onClick = (): void => {
@@ -43,5 +31,3 @@ const DeleteBookCardAction: React.FC = () => {
     />
   )
 }
-
-export default React.memo(DeleteBookCardAction)

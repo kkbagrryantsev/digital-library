@@ -1,33 +1,33 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState } from 'react'
 import './PseudoElementShiftAnimationContainer.scss'
-import { nanoid } from 'nanoid'
+import classnames from 'classnames'
 
 interface PseudoElementShiftAnimationContainerProps {
   children: React.ReactNode
 }
 
 interface PseudoElementShiftAnimationContainerContext {
-  id: string | undefined
+  isFocused: boolean
+  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const defaultState: PseudoElementShiftAnimationContainerContext = {
-  id: undefined
+  isFocused: false,
+  setIsFocused: () => {}
 }
 
 export const PseudoElementShiftAnimationContext =
   createContext<PseudoElementShiftAnimationContainerContext>(defaultState)
 
-// TODO Mind another logic
 const PseudoElementShiftAnimationContainer: React.FC<
 PseudoElementShiftAnimationContainerProps
 > = ({ children }: PseudoElementShiftAnimationContainerProps) => {
-  const id = nanoid()
+  const [isFocused, setIsFocused] = useState(false)
 
   return (
-    <PseudoElementShiftAnimationContext.Provider value={{ id }}>
+    <PseudoElementShiftAnimationContext.Provider value={{ isFocused, setIsFocused }}>
       <div
-        id={`pseudo-element-shift-animation-container-${id}`}
-        className={'root'}>
+        className={classnames('bloodyRed', isFocused ? 'focused' : '')}>
         {children}
       </div>
     </PseudoElementShiftAnimationContext.Provider>

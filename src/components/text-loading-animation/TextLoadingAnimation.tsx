@@ -4,15 +4,18 @@ import React, { useState, useEffect } from 'react'
 import './TextLoadingAnimation.scss'
 import classnames from 'classnames'
 
-interface TextLoadingAnimationProps
+export interface TextLoadingAnimationParams {
+  alpha?: boolean
+  num?: boolean
+  textcase?: 'upper' | 'lower'
+}
+
+export interface TextLoadingAnimationProps
   extends React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLParagraphElement>,
   HTMLParagraphElement
-  > {
-  alpha?: boolean
-  num?: boolean
+  >, TextLoadingAnimationParams {
   placeholdertext: string
-  textcase?: 'upper' | 'lower'
 }
 
 const TextLoadingAnimation: React.FC<TextLoadingAnimationProps> = (
@@ -40,7 +43,7 @@ const TextLoadingAnimation: React.FC<TextLoadingAnimationProps> = (
         displayedText.slice(charIndex + 1)
 
       setDisplayedText(updatedText)
-    }, 500) // Adjust the interval as needed
+    }, 50) // Adjust the interval as needed
 
     return () => {
       clearInterval(intervalId)
