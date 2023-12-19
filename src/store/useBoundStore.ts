@@ -3,11 +3,11 @@ import {
   createSearchPageSlice,
   type SearchPageSlice
 } from '~/pages/search-page/SearchPageSlice.ts'
-import { type BookPageSlice, createBookPageSlice } from '~/pages/book-page/BookPageSlice.ts'
+import { type BookSlice, createBookSlice } from '~/slices/bookSlice.ts'
 
-const useBoundStore = create<SearchPageSlice & BookPageSlice>()((...a) => ({
+const useBoundStore = create<SearchPageSlice & BookSlice>()((...a) => ({
   ...createSearchPageSlice(...a),
-  ...createBookPageSlice(...a)
+  ...createBookSlice(...a)
 }))
 
 export default useBoundStore

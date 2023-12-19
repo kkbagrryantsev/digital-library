@@ -1,44 +1,26 @@
-import React from 'react'
-import LoadingState from '~/enums/LoadingState.ts'
+import type React from 'react'
+import { LoadingState } from '~/enums/LoadingState.ts'
 
 interface ComponentWithLoaderProps {
-  loadingState: LoadingState
+  loading: LoadingState
   onLoading: React.ReactNode
-  onErrorLoading: React.ReactNode
+  onError: React.ReactNode
   children: React.ReactNode
 }
 
-export const withLoader = (wrappedComponent: React.FC, loadingComponent: React.FC, errorComponent: React.FC) => {
-  return ({ loading }: { loading: LoadingState }) => {
-    switch (loading) {
-      case LoadingState.LOADING:
-        return loadingComponent
-      case LoadingState.LOADED:
-        return wrappedComponent
-      case LoadingState.ERROR:
-        return errorComponent
-      default: {
-        return errorComponent
-      }
-    }
-  }
-}
-
-const ComponentWithLoader: React.FC<ComponentWithLoaderProps> = (
+export const ComponentWithLoader: React.FC<ComponentWithLoaderProps> = (
   props: ComponentWithLoaderProps
 ) => {
-  const { loadingState, onLoading, onErrorLoading, children } = props
-  switch (loadingState) {
+  const { loading, onLoading, onError, children } = props
+  switch (loading) {
     case LoadingState.LOADING:
       return onLoading
     case LoadingState.LOADED:
       return children
     case LoadingState.ERROR:
-      return onErrorLoading
+      return onError
     default: {
       /* Empty */
     }
   }
 }
-
-export default React.memo(ComponentWithLoader)

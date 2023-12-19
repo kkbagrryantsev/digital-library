@@ -1,13 +1,10 @@
-import LoadingState from '~/enums/LoadingState'
+import type { LoadingState } from '~/enums/LoadingState'
+import { type HttpStatusCode } from 'axios'
 
-export class StateWithLoader<T> {
-  readonly value: T
-  readonly loading: LoadingState
-
-  constructor (val: T, loading: LoadingState) {
-    this.value = val
-    this.loading = loading
-  }
+export interface WithLoader<T> {
+  data?: T | undefined | null
+  loading: LoadingState
+  statusCode?: HttpStatusCode | number
 }
 
 //
@@ -32,7 +29,11 @@ export class StateWithLoader<T> {
 //
 // }
 
-export const getStateWithLoader = (state: any): StateWithLoader<any> => {
-  // return { state, asd }
-  return new StateWithLoader(state, LoadingState.LOADING)
-}
+// export const getStateWithLoader = (state: any): StateWithLoader<any> => {
+//   // return { state, asd }
+//   return new StateWithLoader(state, LoadingState.LOADING)
+// }
+//
+// export const getStateWithError = (): StateWithLoader<any> => {
+//   return new StateWithLoader(undefined, LoadingState.ERROR)
+// }

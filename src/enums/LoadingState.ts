@@ -1,4 +1,4 @@
-enum LoadingState {
+export enum LoadingState {
   LOADING = 'loading',
   ERROR = 'error',
   LOADED = 'loaded',
@@ -7,5 +7,3 @@ enum LoadingState {
 // const values = ['a', 'b'] as const
 //
 // type ValuesType = typeof values[number]
-
-export default LoadingState

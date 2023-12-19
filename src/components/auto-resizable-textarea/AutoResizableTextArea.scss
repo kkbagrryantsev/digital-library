@@ -1,0 +1,12 @@
+@import "../../styles/Commons";
+
+.autoResizableTextArea {
+  border: none;
+  overflow-y: hidden;
+  resize: none;
+  padding: 0;
+}
+
+.autoResizableTextArea:focus {
+  outline: none;
+}

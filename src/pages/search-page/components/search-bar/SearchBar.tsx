@@ -1,22 +1,14 @@
 import React from 'react'
+import { AutoResizableTextArea } from '~/components/auto-resizable-textarea/AutoResizableTextArea.tsx'
 
 const SearchBar: React.FC = () => {
-  const onTextAreaInput = (): void => {
-    const textarea = document.getElementById('searchBar__textarea')
-    if (textarea !== null) {
-      textarea.style.height = 'auto'
-      textarea.style.height = `${textarea.scrollHeight}px`
-    }
-  }
-
   return (
     <div className={'searchBar'}>
       <h3>Хочу книгу...</h3>
-      <textarea
-        onInput={onTextAreaInput}
-        id={'searchBar__textarea'}
+      <AutoResizableTextArea
+        className={'searchBar__textarea'}
         placeholder={'про русскую душу, тоску и отчаяние'}
-        className={'searchBar__textarea'}></textarea>
+      ></AutoResizableTextArea>
     </div>
   )
 }
