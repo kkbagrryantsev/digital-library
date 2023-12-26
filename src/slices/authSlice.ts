@@ -15,17 +15,17 @@ export interface AuthSlice {
 }
 
 export const createAuthSlice: StateCreator<AuthSlice> = set => ({
-  isAuthenticated: { data: false, loading: LoadingState.LOADING },
+  isAuthenticated: { data: true, loading: LoadingState.LOADING },
 
   signIn: async (credentials: string) => {
     try {
       const response = await apiSignIn(credentials)
 
-      const data = response.data
       const statusCode = response.status
 
-      // FIXME is authenticated has another check logic
-      set(_state => ({ isAuthenticated: { data, loading: LoadingState.LOADED, statusCode } }))
+      if (statusCode === 200) {
+        set(_state => ({ isAuthenticated: { data: true, loading: LoadingState.LOADED, statusCode } }))
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // TODO Remove debug
@@ -60,7 +60,7 @@ export const createAuthSlice: StateCreator<AuthSlice> = set => ({
 
   checkAuthentication: async () => {
     try {
-      set(_state => ({ isAuthenticated: { data: false, loading: LoadingState.LOADING } }))
+      set(_state => ({ isAuthenticated: { data: true, loading: LoadingState.LOADING } }))
 
       const response = await apiCheckAuthentication()
 
@@ -82,7 +82,7 @@ export const createAuthSlice: StateCreator<AuthSlice> = set => ({
 
         if (error.response !== undefined) {
           const statusCode = error.response.status
-          set(_state => ({ isAuthenticated: { data: false, loading: LoadingState.ERROR, statusCode } }))
+          set(_state => ({ isAuthenticated: { data: true, loading: LoadingState.ERROR, statusCode } }))
         }
       }
     }

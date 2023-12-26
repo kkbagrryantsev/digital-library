@@ -8,7 +8,7 @@
   //max-width: 1024px;
   //min-width: 800px;
   //TODO Convert to rem
-  padding: 50px 80px;
+  padding: 50px 70px;
   box-sizing: border-box;
 }
 
@@ -20,6 +20,15 @@
   gap: 60px;
   min-width: 700px;
   width: 60%;
+}
+
+.actions {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
 }
 
 .author {
@@ -41,8 +50,7 @@
 .description {
   @extend h4;
   @extend %droid-serif-regular;
-  width: 50%;
-  min-width: 700px;
+  width: 100%;
 }
 
 .isbn {

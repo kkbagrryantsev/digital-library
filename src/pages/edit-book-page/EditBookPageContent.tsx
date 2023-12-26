@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, {
+  type ChangeEvent,
+  type MouseEvent,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import './styles/EditBookPageContent.scss'
 import {
   type FieldValues,
-  FormProvider, type SubmitHandler,
+  FormProvider,
+  type SubmitHandler,
   useForm,
   useFormContext
 } from 'react-hook-form'
@@ -12,6 +19,19 @@ import classnames from 'classnames'
 import { useRandomSymbolAnimation } from '~/components/text-loading-animation/TextLoadingAnimation.tsx'
 import AutoResizableTextArea from '~/components/auto-resizable-textarea/AutoResizableTextArea.tsx'
 import { LoadingState } from '~/enums/LoadingState.ts'
+import { BookAction } from '~/shared/book-action/BookAction.tsx'
+import {
+  apiDeleteBook,
+  apiDeleteBookFile,
+  apiDownloadBook,
+  apiEditBook,
+  apiUploadBookFile
+} from '~/api/ApiCalls.ts'
+import axios from 'axios'
+import { downloadFile } from '~/utils/BrowserUtils.ts'
+// TODO Remove redux
+import { nanoid } from '@reduxjs/toolkit'
+import { useLocation } from 'wouter'
 
 interface BookDataInputFieldProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -19,13 +39,7 @@ interface BookDataInputFieldProps
 }
 
 const BookDataInputField: React.FC<BookDataInputFieldProps> = props => {
-  const {
-    name,
-    required,
-    defaultValue,
-    placeholder,
-    ...otherProps
-  } = props
+  const { name, required, defaultValue, placeholder, ...otherProps } = props
   const { setValue, watch, register } = useFormContext()
   const [text, setText] = useState<any>(defaultValue ?? '')
 
@@ -214,6 +228,270 @@ const BookISBN: React.FC = () => {
   )
 }
 
+const AddBookFileActionButton: React.FC = () => {
+  const { data } = useBoundStore(state => state.book)
+  const fetchBook = useBoundStore(state => state.fetchBook)
+
+  const id = data?.id
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const uploadBookFile = async (id: any, file: any): Promise<void> => {
+    try {
+      if (id == null) {
+        return
+      }
+
+      const convertedBookFile = new FormData()
+      convertedBookFile.append('file', file)
+
+      const response = await apiUploadBookFile(id, convertedBookFile)
+
+      const statusCode = response.status
+
+      if (statusCode === 200) {
+        console.log(data)
+        void fetchBook(id)
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response !== undefined) {
+          const response = error.response
+          // TODO Add error handling
+          const statusCode = response.status
+          console.log(statusCode)
+        }
+      }
+    }
+  }
+
+  const onClick = (event: MouseEvent): void => {
+    event.preventDefault()
+
+    if (inputRef.current !== null) {
+      inputRef.current.click()
+    }
+  }
+
+  const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    if (event.target.files != null) {
+      const file = event.target.files[0]
+      void uploadBookFile(id, file)
+    }
+  }
+
+  return (
+    <>
+      <input
+        onChange={onChange}
+        type={'file'}
+        style={{ display: 'none' }}
+        ref={inputRef}
+      />
+      <BookAction
+        onClick={onClick}
+        title={'Загрузить новый файл'}
+        info={'прикрепить'}
+      />
+    </>
+  )
+}
+
+const ExistingFileBookButton: React.FC<{ filename: string }> = (props: {
+  filename: string
+}) => {
+  const { filename } = props
+
+  const { data } = useBoundStore(state => state.book)
+
+  const id = data?.id
+
+  const downloadBook = async (id: any, filename: any): Promise<void> => {
+    try {
+      const response = await apiDownloadBook(id)
+
+      const statusCode = response.status
+
+      const data = response.data
+
+      if (statusCode === 200) {
+        downloadFile(data, `${filename}`)
+        // navigate(location.replace('/book', '/search'))
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response !== undefined) {
+          const response = error.response
+          // TODO Add error handling
+          const statusCode = response.status
+          console.log(statusCode)
+        }
+      }
+    }
+  }
+
+  const deleteBookFile = async (id: any): Promise<void> => {
+    try {
+      const response = await apiDeleteBookFile(id)
+
+      const statusCode = response.status
+
+      if (statusCode === 200) {
+        // TODO Implement this action in store to add positive rendering
+        window.location.reload()
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response !== undefined) {
+          const response = error.response
+          // TODO Add error handling
+          const statusCode = response.status
+          console.log(statusCode)
+        }
+      }
+    }
+  }
+
+  const onTitleClick = (): void => {
+    void downloadBook(id, filename)
+  }
+
+  const onInfoClick = (): void => {
+    void deleteBookFile(id)
+  }
+
+  return (
+    <BookAction
+      title={filename}
+      onTitleClick={onTitleClick}
+      info={'удалить'}
+      infoClassName={'text_modDanger'}
+      onInfoClick={onInfoClick}
+    />
+  )
+}
+
+const ExistingBookFiles: React.FC = () => {
+  const { data } = useBoundStore(state => state.book)
+
+  const files = data?.files
+
+  return (
+    <>
+      {files?.map(filename => (
+        <ExistingFileBookButton filename={filename} key={nanoid()} />
+      ))}
+    </>
+  )
+}
+
+const DeleteBookActionButton: React.FC = () => {
+  const { data } = useBoundStore(state => state.book)
+
+  const [location, navigate] = useLocation()
+
+  const id = data?.id
+
+  const deleteBook = async (id: any): Promise<void> => {
+    try {
+      const response = await apiDeleteBook(id)
+
+      const statusCode = response.status
+
+      if (statusCode === 200) {
+        navigate(location.replace('/book', '/search'))
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response !== undefined) {
+          const response = error.response
+          // TODO Add error handling
+          const statusCode = response.status
+          console.log(statusCode)
+        }
+      }
+    }
+  }
+
+  const onClick = (): void => {
+    void deleteBook(id)
+  }
+
+  return (
+    <BookAction
+      type={'button'}
+      onClick={onClick}
+      title={'Удалить'}
+      titleClassName={'text_modDanger'}
+      dotsClassName={'text_modDanger'}
+      info={'действие необратимо'}
+      infoClassName={'text_modDanger'}
+    />
+  )
+}
+
+const SaveChangesActionButton: React.FC<{ handleSubmit: any }> = props => {
+  const { handleSubmit } = props
+  const [saveState, setSaveState] = useState<string>('')
+  const { loading } = useBoundStore(state => state.book)
+
+  const editBook = async (data: any): Promise<void> => {
+    try {
+      setSaveState('сохраняется, подождите')
+
+      const response = await apiEditBook(data)
+
+      const statusCode = response.status
+
+      if (statusCode === 200) {
+        setSaveState('сохранено')
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response !== undefined) {
+          const response = error.response
+          const statusCode = response.status
+          setSaveState(`не удалось сохранить (${statusCode})`)
+        }
+      }
+    }
+  }
+
+  const onSubmit: SubmitHandler<FieldValues> = (data: FieldValues): void => {
+    void editBook(data)
+  }
+
+  if (loading !== LoadingState.LOADED) {
+    return null
+  }
+
+  return (
+    <BookAction
+      type={'button'}
+      onClick={handleSubmit(onSubmit)}
+      title={'Сохранить изменения'}
+      info={saveState}
+      infoClassName={'text_modDisabled'}
+    />
+  )
+}
+
+const EditBookActions: React.FC = () => {
+  const { loading } = useBoundStore(state => state.book)
+
+  if (loading !== LoadingState.LOADED) {
+    return null
+  }
+
+  return (
+    <div className={'actions'}>
+      <AddBookFileActionButton />
+      <ExistingBookFiles />
+      <DeleteBookActionButton />
+    </div>
+  )
+}
+
 export const EditBookPageContent: React.FC = () => {
   const { loading, data } = useBoundStore(state => state.book)
 
@@ -221,33 +499,34 @@ export const EditBookPageContent: React.FC = () => {
 
   useEffect(() => {
     if (loading === LoadingState.LOADED) {
+      methods.setValue('id', data?.id ?? '')
       methods.setValue('title', data?.title ?? '')
-      methods.setValue('description', data?.description ?? '')
-      methods.setValue('genre', data?.genre ?? '')
       methods.setValue('author', data?.author ?? '')
+      methods.setValue('genre', data?.genre ?? '')
+      methods.setValue('description', data?.description ?? '')
       methods.setValue('isbn', data?.isbn ?? '')
     }
   }, [loading, data, methods.setValue])
 
-  const onSubmit: SubmitHandler<FieldValues> = (data: FieldValues): void => {
-    console.log(data)
-  }
+  // const onSubmit: SubmitHandler<FieldValues> = (data: FieldValues): void => {
+  //   console.log(data)
+  // }
 
   return (
     // TODO Fix code duplication (BookPage)
     <main className={'editBookPageContent'}>
       <FormProvider {...methods}>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form className={'book'} onSubmit={methods.handleSubmit(onSubmit)}>
+        <form className={'book'}>
           <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
             <BookAuthor />
             <BookGenre />
           </div>
           <BookTitle />
           <BookDescription />
-          <div className={'actions'}></div>
+          <EditBookActions/>
           <BookISBN />
-          <button type={'submit'}>Save</button>
+          <SaveChangesActionButton handleSubmit={methods.handleSubmit} />
         </form>
       </FormProvider>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}

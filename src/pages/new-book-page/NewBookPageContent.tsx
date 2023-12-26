@@ -8,6 +8,10 @@ import {
   useFormContext
 } from 'react-hook-form'
 import AutoResizableTextArea from '~/components/auto-resizable-textarea/AutoResizableTextArea.tsx'
+import { apiAddBook } from '~/api/ApiCalls.ts'
+import axios from 'axios'
+import { useLocation } from 'wouter'
+import { BookAction } from '~/shared/book-action/BookAction.tsx'
 
 interface BookDataInputFieldProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -109,19 +113,59 @@ const BookISBN: React.FC = () => {
   )
 }
 
-export const NewBookPageContent: React.FC = () => {
-  const methods = useForm()
+const AddBookActionButton: React.FC<{ handleSubmit: any }> = props => {
+  const { handleSubmit } = props
+  const [addState, setAddState] = useState<string>('')
+  const [location, navigate] = useLocation()
+
+  const addBook = async (bookData: any): Promise<void> => {
+    try {
+      setAddState('добавляется')
+
+      const response = await apiAddBook(bookData)
+
+      const data = response.data
+      const statusCode = response.status
+
+      if (statusCode === 200) {
+        const id = data.id
+        navigate(location.replace('/new', `/${id}`))
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response !== undefined) {
+          const response = error.response
+          const statusCode = response.status
+          setAddState(`не удалось добавить книгу (${statusCode})`)
+        }
+      }
+    }
+  }
 
   const onSubmit: SubmitHandler<FieldValues> = (data: FieldValues): void => {
-    console.log(data)
+    void addBook(data)
   }
+
+  return (
+    <BookAction
+      type={'button'}
+      onClick={handleSubmit(onSubmit)}
+      title={'Добавить книгу'}
+      info={addState}
+      infoClassName={'text_modDisabled'}
+    />
+  )
+}
+
+export const NewBookPageContent: React.FC = () => {
+  const methods = useForm()
 
   return (
     // TODO Fix code duplication (BookPage)
     <main className={'newBookPageContent'}>
       <FormProvider {...methods}>
         {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-        <form className={'book'} onSubmit={methods.handleSubmit(onSubmit)}>
+        <form className={'book'}>
           <div style={{ display: 'flex', flexDirection: 'row', gap: '40px' }}>
             <BookAuthor />
             <BookGenre />
@@ -130,7 +174,7 @@ export const NewBookPageContent: React.FC = () => {
           <BookDescription />
           <div className={'actions'}></div>
           <BookISBN />
-          <button type={'submit'}>Save</button>
+          <AddBookActionButton handleSubmit={methods.handleSubmit}/>
         </form>
       </FormProvider>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}

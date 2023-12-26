@@ -4,4 +4,8 @@
   color: $charcoal;
   font-size: $h5;
   @extend %roboto-bold;
+
+  &:hover {
+    color: $charcoal;
+  }
 }

@@ -4,6 +4,13 @@ import useBoundStore from '~/store/useBoundStore.ts'
 import { ComponentWithLoader } from '~/components/component-with-loader/ComponentWithLoader.tsx'
 import classnames from 'classnames'
 import { useRandomSymbolAnimation } from '~/components/text-loading-animation/TextLoadingAnimation.tsx'
+import { BookAction } from '~/shared/book-action/BookAction.tsx'
+import { ProtectedElement } from '~/components/protected-element/ProtectedElement.tsx'
+import { useLocation } from 'wouter'
+import { apiDeleteBook, apiDownloadBook } from '~/api/ApiCalls.ts'
+import axios from 'axios'
+import { downloadFile } from '~/utils/BrowserUtils.ts'
+import { LoadingState } from '~/enums/LoadingState.ts'
 
 const BookTitle: React.FC = () => {
   const { data, loading, statusCode } = useBoundStore(state => state.book)
@@ -126,24 +133,130 @@ const BookISBN: React.FC = () => {
           })}
         </h4>
       }>
-      <h4 className={'isbn'}>{isbn?.toUpperCase()}</h4>
+      <h4 className={'isbn'}>ISBN {isbn?.toUpperCase()}</h4>
     </ComponentWithLoader>
   )
 }
 
-export const BookPageContent: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const { loading } = useBoundStore(state => state.book)
-  // noinspection SpellCheckingInspection
-  // const { title, description, author, genre, isbn } = {
-  //   title: 'Игрок',
-  //   author: 'Федор Достоевский',
-  //   genre: 'Классическая проза',
-  //   description:
-  //     '"Достоевским я зачитывался, даже в очень плохих переводах. Позднее я прочитал его по-французски, на французский его переводили русские, их переводы были гораздо лучше испанских. Я думаю, что для любого писателя в мире русские романисты — основа основ..." (Габриэль Гарсиа Маркес)',
-  //   isbn: '978-5-699-43490-9 '
-  // }
+const DownloadBookActionButton: React.FC = () => {
+  const { data } = useBoundStore(state => state.book)
 
+  const id = data?.id
+  const filename = data?.title
+  const files = data?.files
+
+  const downloadBook = async (id: any, filename: any): Promise<void> => {
+    try {
+      const response = await apiDownloadBook(id)
+
+      const statusCode = response.status
+
+      const data = response.data
+
+      if (statusCode === 200) {
+        downloadFile(data, `${filename}.fb2`)
+        // navigate(location.replace('/book', '/search'))
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response !== undefined) {
+          const response = error.response
+          // TODO Add error handling
+          const statusCode = response.status
+          console.log(statusCode)
+        }
+      }
+    }
+  }
+
+  const onClick = (): void => {
+    void downloadBook(id, filename)
+  }
+
+  if (files == null || files?.length === 0) {
+    return null
+  }
+
+  return <BookAction onClick={onClick} title={'Скачать'} info={'FB2'}></BookAction>
+}
+
+const EditBookActionButton: React.FC = () => {
+  const [location, navigate] = useLocation()
+
+  const onClick = (): void => {
+    navigate(location + '/edit')
+  }
+
+  return (
+    <BookAction onClick={onClick} title={'Редактировать'} info={'внести изменения'}></BookAction>
+  )
+}
+
+const DeleteBookActionButton: React.FC = () => {
+  const { data } = useBoundStore(state => state.book)
+
+  const [location, navigate] = useLocation()
+
+  const id = data?.id
+
+  const deleteBook = async (id: any): Promise<void> => {
+    try {
+      const response = await apiDeleteBook(id)
+
+      const statusCode = response.status
+
+      if (statusCode === 200) {
+        navigate(location.replace('/book', '/search'))
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response !== undefined) {
+          const response = error.response
+          // TODO Add error handling
+          const statusCode = response.status
+          console.log(statusCode)
+        }
+      }
+    }
+  }
+
+  const onClick = (): void => {
+    void deleteBook(id)
+  }
+
+  return (
+    <BookAction
+      onClick={onClick}
+      title={'Удалить'}
+      titleClassName={'text_modDanger'}
+      dotsClassName={'text_modDanger'}
+      info={'действие необратимо'}
+      infoClassName={'text_modDanger'}
+    />
+  )
+}
+
+const BookActions: React.FC = () => {
+  const { loading } = useBoundStore(state => state.book)
+
+  if (loading !== LoadingState.LOADED) {
+    return null
+  }
+
+  return (
+    <div className={'actions'}>
+      <DownloadBookActionButton />
+      <ProtectedElement policy={'authenticatedOnly'}>
+        <EditBookActionButton />
+      </ProtectedElement>
+      <ProtectedElement policy={'authenticatedOnly'}>
+        <DeleteBookActionButton />
+      </ProtectedElement>
+    </div>
+  )
+}
+
+export const BookPageContent: React.FC = () => {
   return (
     <main className={'bookPageContent'}>
       <div className={'book'}>
@@ -153,7 +266,7 @@ export const BookPageContent: React.FC = () => {
         </div>
         <BookTitle />
         <BookDescription />
-        <div className={'actions'}></div>
+        <BookActions/>
         <BookISBN />
       </div>
     </main>

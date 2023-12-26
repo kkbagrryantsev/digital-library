@@ -1,9 +1,38 @@
 import React from 'react'
 import BookCardAction from '~/pages/search-page/components/book-card-action/BookCardAction.tsx'
+import { apiDownloadBook } from '~/api/ApiCalls.ts'
+import { downloadFile } from '~/utils/BrowserUtils.ts'
+import axios from 'axios'
 
-const DownloadBookCardAction: React.FC = () => {
+const DownloadBookCardAction: React.FC<{ id: string, title: string }> = (props) => {
+  const { id, title } = props
+
+  const downloadBook = async (id: any, filename: any): Promise<void> => {
+    try {
+      const response = await apiDownloadBook(id)
+
+      const statusCode = response.status
+
+      const data = response.data
+
+      if (statusCode === 200) {
+        downloadFile(data, `${filename}.fb2`)
+        // navigate(location.replace('/book', '/search'))
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response !== undefined) {
+          const response = error.response
+          // TODO Add error handling
+          const statusCode = response.status
+          console.log(statusCode)
+        }
+      }
+    }
+  }
+
   const onClick = (): void => {
-    // TODO Add download action
+    void downloadBook(id, title)
   }
 
   return (

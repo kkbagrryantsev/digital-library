@@ -1,0 +1,56 @@
+@import "../../../styles/Commons";
+
+.bookAction {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+
+  padding: 0;
+
+  border: none;
+  background-color: transparent;
+
+  &:hover {
+    border: none;
+    cursor: pointer;
+  }
+
+  &:focus,
+  &:focus-visible{
+    outline: none;
+  }
+}
+
+.bookAction__title {
+  font-size: $h4;
+  @extend %droid-serif-bold;
+
+  width: min-content;
+
+  white-space: nowrap;
+}
+
+.bookAction__dots {
+  font-size: $h4;
+  @extend %droid-serif-regular;
+
+  white-space: nowrap;
+}
+
+.bookAction__info {
+  font-size: $h4;
+  @extend %droid-serif-regular;
+
+  width: min-content;
+
+  white-space: nowrap;
+}
+
+.hiddenDot {
+  font-size: $h4;
+  @extend %droid-serif-regular;
+
+  width: min-content;
+  visibility: hidden;
+}

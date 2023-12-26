@@ -1,3 +1,5 @@
+@import "../../../styles/Commons";
+
 .searchPageContent {
   display: flex;
   flex-direction: column;
@@ -7,12 +9,31 @@
   min-width: 800px;
   padding: 0 10rem;
   box-sizing: border-box;
+  margin: 80px;
 
   &:has(.bookCard) {
-    margin: 80px;
+    margin: 20px
   }
 }
 
 .addBookButton {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 
+  padding: 20px;
+
+  background-color: $white;
+  border: 1px solid $light-gray;
+  @include shadow();
+  @include elevation(1);
+
+  font-size: $h4;
+  @extend %droid-serif-regular;
+  color: $charcoal;
+
+  &:hover {
+    cursor: pointer;
+    color: $charcoal;
+  }
 }

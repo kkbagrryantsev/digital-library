@@ -7,12 +7,13 @@ import DownloadBookCard from '~/pages/search-page/components/book-card-action/ac
 import { useLocation } from 'wouter'
 
 interface BookCardProps {
-  id: number
+  id: string
   author: string
   title: string
   description: string
   genre: string
   sequenceNumber: number
+  hideActions?: boolean
 }
 
 export const BookCard: React.FC<BookCardProps> = ({
@@ -21,7 +22,8 @@ export const BookCard: React.FC<BookCardProps> = ({
   title,
   description,
   genre,
-  sequenceNumber
+  sequenceNumber,
+  hideActions
 }: BookCardProps) => {
   const [location, setLocation] = useLocation()
 
@@ -36,25 +38,30 @@ export const BookCard: React.FC<BookCardProps> = ({
         <header className={'bookCardHeader'}>
           <div className={'bookCardHeader__credentials'}>
             <h4>{author}</h4>
-            <h3>
-              {title}
-            </h3>
+            <h3>{title}</h3>
           </div>
           <h5>{genre}</h5>
         </header>
         <div className={'bookCardContent'}>
           <h5>{description}</h5>
-          <div
-            className={classnames(
-              'bookCardContent__divider',
-              'bookCardContent__divider_modShort'
-            )}
-          />
-          <div className={'bookCard__actions'}>
-            {/* TODO Fix actions */}
-            <DownloadBookCard />
-            <DeleteBookCardAction />
-          </div>
+          { hideActions === true
+            ? null
+            : <div
+              className={classnames(
+                'bookCardContent__divider',
+                'bookCardContent__divider_modShort'
+              )}
+            />
+          }
+          {hideActions === true
+            ? null
+            : (
+            <div className={'bookCard__actions'}>
+              {/* TODO Fix actions */}
+              <DownloadBookCard id={id} title={title} />
+              <DeleteBookCardAction id={id} />
+            </div>
+              )}
           <h4>{sequenceNumber}</h4>
           <div
             className={classnames(
