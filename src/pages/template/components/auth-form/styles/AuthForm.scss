@@ -1,0 +1,38 @@
+@import "../../../../../styles/Commons";
+
+.signOutButton {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  font-size: $h5;
+  @extend %roboto-bold;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.authForm {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  color: $gray;
+}
+
+.authForm__input {
+  border: none;
+  border-bottom: solid $gray 1px;
+  @extend %roboto-regular;
+  color: $gray;
+  font-size: $h5;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.authForm__hint {
+  font-size: $h5;
+  @extend %roboto-regular;
+}

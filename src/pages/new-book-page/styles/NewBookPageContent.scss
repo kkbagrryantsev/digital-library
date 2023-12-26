@@ -1,6 +1,6 @@
 @import "../../../styles/Commons";
 
-.bookPageContent {
+.newBookPageContent {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -13,8 +13,6 @@
 }
 
 .book {
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 60px;
@@ -25,17 +23,33 @@
 .author {
   @extend h4;
   @extend %roboto-bold;
+
+  &::placeholder {
+    color: $bloody-red;
+    filter: opacity(0.6);
+  }
+
 }
 
 .title {
   @extend h1;
   @extend %roboto-black;
+
+  &::placeholder {
+    color: $bloody-red;
+    filter: opacity(0.6);
+  }
 }
 
 .genre {
   @extend h4;
   @extend %droid-serif-italic;
   color: $gray;
+
+  &::placeholder {
+    color: $bloody-red;
+    filter: opacity(0.6);
+  }
 }
 
 .description {
@@ -49,6 +63,12 @@
   @extend h4;
   @extend %droid-serif-regular;
   color: $gray;
+
+  &::placeholder {
+    color: $bloody-red;
+    filter: opacity(0.6);
+  }
+
 }
 
 .text_modDanger {

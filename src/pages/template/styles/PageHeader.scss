@@ -1,0 +1,14 @@
+.pageHeader {
+  width: 100%;
+
+  padding: 16px 30px;
+
+  box-sizing: border-box;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+}
+
+.pageHeader > :only-child {
+  margin-left: auto;
+}

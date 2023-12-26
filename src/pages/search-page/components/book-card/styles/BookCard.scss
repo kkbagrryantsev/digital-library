@@ -16,6 +16,10 @@
   border: 1px solid $light-gray;
   @include elevation(1);
   @include shadow();
+  
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .bookCardHeader {

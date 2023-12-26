@@ -4,8 +4,10 @@ import classnames from 'classnames'
 import PseudoElementShiftAnimationContainer from '~/components/pseudo-element-shift-animation-container/PseudoElementShiftAnimationContainer.tsx'
 import { DeleteBookCardAction } from '~/pages/search-page/components/book-card-action/actions/DeleteBookCardAction.tsx'
 import DownloadBookCard from '~/pages/search-page/components/book-card-action/actions/DownloadBookCard.tsx'
+import { useLocation } from 'wouter'
 
 interface BookCardProps {
+  id: number
   author: string
   title: string
   description: string
@@ -13,24 +15,28 @@ interface BookCardProps {
   sequenceNumber: number
 }
 
-const BookCard: React.FC<BookCardProps> = ({
+export const BookCard: React.FC<BookCardProps> = ({
+  id,
   author,
   title,
   description,
   genre,
   sequenceNumber
 }: BookCardProps) => {
+  const [location, setLocation] = useLocation()
+
   const openBookPage = (): void => {
-    // TODO Redirect to book page
+    const otherRoute = location.replace('/search', `/book/${id}`)
+    setLocation(otherRoute)
   }
 
   return (
     <PseudoElementShiftAnimationContainer>
-      <div className={'bookCard'}>
+      <div className={'bookCard'} onClick={openBookPage}>
         <header className={'bookCardHeader'}>
           <div className={'bookCardHeader__credentials'}>
             <h4>{author}</h4>
-            <h3 onClick={openBookPage} className={'clickable'}>
+            <h3>
               {title}
             </h3>
           </div>
@@ -60,5 +66,3 @@ const BookCard: React.FC<BookCardProps> = ({
     </PseudoElementShiftAnimationContainer>
   )
 }
-
-export default React.memo(BookCard)

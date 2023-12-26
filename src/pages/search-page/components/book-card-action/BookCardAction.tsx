@@ -17,11 +17,16 @@ const BookCardAction: React.FC<BookCardActionProps> = (
   props: BookCardActionProps
 ) => {
   // noinspection SpellCheckingInspection
-  const { sequencenumber, actiontitlename, actionextrainformation, className: customClassName } =
+  const { onClick, sequencenumber, actiontitlename, actionextrainformation, className: customClassName, ...otherProps } =
     props
 
+  const onClickHandler = (event: React.MouseEvent<HTMLHeadingElement, MouseEvent>): void => {
+    event.stopPropagation()
+    onClick?.(event)
+  }
+
   return (
-    <h5 className={classnames('bookCardAction', customClassName)} {...props} >
+    <h5 onClick={onClickHandler} className={classnames('bookCardAction', customClassName)} {...otherProps} >
       <sup>{sequencenumber}</sup> <b>{actiontitlename}</b>{' '}
       {actionextrainformation}
     </h5>
