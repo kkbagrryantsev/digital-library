@@ -58,6 +58,7 @@ Backend is configured to run on port 8080 and CORS policy is configured to accep
 1. Run the backend application
 2. Make sure the port 5173 is not occupied
 3. Run ```vite``` in the project directory
+4. Navigate to ```/search```
 
 Consider checking the ```package.json``` scripts for other available options
 
