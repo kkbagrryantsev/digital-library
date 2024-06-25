@@ -17,7 +17,7 @@ export interface AuthSlice {
 export const createAuthSlice: StateCreator<AuthSlice> = set => ({
   isAuthenticated: { data: true, loading: LoadingState.LOADING },
 
-  signIn: async (credentials: string) => {
+  signIn: async (credentials: any) => {
     try {
       const response = await apiSignIn(credentials)
 

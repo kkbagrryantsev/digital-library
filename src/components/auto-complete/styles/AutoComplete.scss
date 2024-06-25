@@ -1,0 +1,73 @@
+@import "src/styles/Colors";
+
+.wrapper{
+  position: relative;
+}
+
+.searchInput{
+  width: 100%;
+}
+
+.searchInput input{
+  outline: none;
+  border: none;
+  //box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+.emptyListLabel {
+  text-align: center;
+  margin: 5px;
+  color: #b0b0b0;
+}
+
+.autocomBox {
+  position: absolute;
+  margin-top: 7px;
+  z-index: 1;
+  border-radius: 10px;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  max-height: 280px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+.autocomBox.active {
+  width: 100%;
+  padding: 10px 0;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.autocomBox li{
+  list-style: none;
+  padding: 8px 12px;
+  display: none;
+  width: initial;
+  cursor: default;
+  user-select: none;
+  border-radius: 3px;
+}
+
+.autocomBox.active li{
+  display: block;
+}
+.autocomBox li:hover{
+  background: #eaeaea;
+  cursor: pointer;
+}
+
+.searchInput .icon{
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 55px;
+  width: 55px;
+  text-align: center;
+  line-height: 55px;
+  font-size: 20px;
+  color: #ffffff;
+  cursor: pointer;
+}

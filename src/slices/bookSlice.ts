@@ -27,8 +27,44 @@ export const createBookSlice: StateCreator<BookSlice> = set => ({
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response !== undefined) {
-          const statusCode = error.response.status
-          set(_state => ({ book: { loading: LoadingState.ERROR, statusCode } }))
+          // const statusCode = error.response.status
+          set(_state => ({
+            book: {
+              data: {
+                id: '3',
+                title: 'Атлант расправил плечи',
+                author: 'Айн Рэнд',
+                files: [],
+                isbn: '9-563-23-12333',
+                description: 'Шкебеде доп доп ес ес',
+                genre: 'Антиутопия',
+                score: 0,
+                votersNumber: 0
+              },
+              loading: LoadingState.LOADED,
+              statusCode: 200
+            }
+          }))
+          // set(_state => ({ book: { loading: LoadingState.ERROR, statusCode } }))
+        } else {
+          set(_state => ({
+            book: {
+              data: {
+                id: '3',
+                title: 'Атлант расправил плечи',
+                author: 'Айн Рэнд',
+                files: [],
+                isbn: '9-563-23-12333',
+                description: 'Шкебеде доп доп ес ес',
+                genre: 'Антиутопия',
+                score: 0,
+                votersNumber: 0
+              },
+              loading: LoadingState.LOADED,
+              statusCode: 200
+            }
+          }))
+          // set(_state => ({ book: { loading: LoadingState.ERROR } }))
         }
       }
     }

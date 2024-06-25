@@ -22,7 +22,6 @@ export const BookPage: React.FC<BookPageProps> = ({ id }: BookPageProps) => {
     <Page>
       <PageHeader>
          <GoBack to={'/search'}/>
-        {/* //TODO Add return button */}
         <AuthForm />
       </PageHeader>
       <PageContent>

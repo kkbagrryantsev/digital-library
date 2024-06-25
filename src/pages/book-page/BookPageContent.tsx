@@ -3,14 +3,15 @@ import './styles/BookPageContent.scss'
 import useBoundStore from '~/store/useBoundStore.ts'
 import { ComponentWithLoader } from '~/components/component-with-loader/ComponentWithLoader.tsx'
 import classnames from 'classnames'
-import { useRandomSymbolAnimation } from '~/components/text-loading-animation/TextLoadingAnimation.tsx'
+import { useRandomSymbolAnimation } from '~/hooks/useRandomSymbolAnimation.tsx'
 import { BookAction } from '~/shared/book-action/BookAction.tsx'
 import { ProtectedElement } from '~/components/protected-element/ProtectedElement.tsx'
 import { useLocation } from 'wouter'
-import { apiDeleteBook, apiDownloadBook } from '~/api/ApiCalls.ts'
+import { apiDeleteBook, apiDownloadBook, apiRateBook } from '~/api/ApiCalls.ts'
 import axios from 'axios'
 import { downloadFile } from '~/utils/BrowserUtils.ts'
 import { LoadingState } from '~/enums/LoadingState.ts'
+import { ScoreRangeBar } from '~/pages/book-page/components/ScoreRangeBar.tsx'
 
 const BookTitle: React.FC = () => {
   const { data, loading, statusCode } = useBoundStore(state => state.book)
@@ -133,7 +134,50 @@ const BookISBN: React.FC = () => {
           })}
         </h4>
       }>
-      <h4 className={'isbn'}>ISBN {isbn?.toUpperCase()}</h4>
+      <h4 className={'isbn'}>ISBN {isbn?.toUpperCase() ?? 'XXX-X-XXXXX-XXX-X'}</h4>
+    </ComponentWithLoader>
+  )
+}
+
+const BookScore: React.FC = () => {
+  const { loading, data } = useBoundStore(state => state.book)
+
+  const onScoreChange = (newScore: number): void => {
+    if (data?.id !== undefined) {
+      apiRateBook(data?.id, newScore).then(
+        _onfulfilled => {},
+        _onrejected => {}
+      )
+    }
+  }
+
+  const score = data?.score
+  return (
+    <ComponentWithLoader
+      loading={loading}
+      onLoading={
+        <h4 className={'score'}>
+          Оценка{' '}
+          {useRandomSymbolAnimation('4.8', {
+            alpha: false,
+            special: false
+          })}
+        </h4>
+      }
+      onError={
+        <h4 className={classnames('text_modDanger', 'score')}>
+          Оценка{' '}
+          {useRandomSymbolAnimation('4.8', {
+            alpha: false,
+            special: false
+          })}
+        </h4>
+      }>
+      <div className={'flex flex-row items-center gap-1'}>
+        <h4 className={'score'}>Оценка:</h4>
+        <ScoreRangeBar defaultScore={score ?? 0} maxScore={5} onScoreChange={onScoreChange} />
+        <h4 className={'score'}>{score?.toPrecision(2)}</h4>
+      </div>
     </ComponentWithLoader>
   )
 }
@@ -143,7 +187,7 @@ const DownloadBookActionButton: React.FC = () => {
 
   const id = data?.id
   const filename = data?.title
-  const files = data?.files
+  // const files = data?.files
 
   const downloadBook = async (id: any, filename: any): Promise<void> => {
     try {
@@ -155,7 +199,6 @@ const DownloadBookActionButton: React.FC = () => {
 
       if (statusCode === 200) {
         downloadFile(data, `${filename}.fb2`)
-        // navigate(location.replace('/book', '/search'))
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -173,11 +216,9 @@ const DownloadBookActionButton: React.FC = () => {
     void downloadBook(id, filename)
   }
 
-  if (files == null || files?.length === 0) {
-    return null
-  }
-
-  return <BookAction onClick={onClick} title={'Скачать'} info={'FB2'}></BookAction>
+  return (
+    <BookAction onClick={onClick} title={'Скачать'} info={'FB2'}></BookAction>
+  )
 }
 
 const EditBookActionButton: React.FC = () => {
@@ -188,7 +229,10 @@ const EditBookActionButton: React.FC = () => {
   }
 
   return (
-    <BookAction onClick={onClick} title={'Редактировать'} info={'внести изменения'}></BookAction>
+    <BookAction
+      onClick={onClick}
+      title={'Редактировать'}
+      info={'внести изменения'}></BookAction>
   )
 }
 
@@ -266,9 +310,16 @@ export const BookPageContent: React.FC = () => {
         </div>
         <BookTitle />
         <BookDescription />
-        <BookActions/>
-        <BookISBN />
+        <BookActions />
+        <div className={'flex flex-row gap-4 items-center text-gray-400'}>
+          <BookISBN />
+          •
+          <BookScore />
+        </div>
       </div>
+      {/* <CoverCanvas */}
+      {/*  words={['пэнис', 'пэнис']} */}
+      {/* /> */}
     </main>
   )
 }

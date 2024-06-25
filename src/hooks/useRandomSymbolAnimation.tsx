@@ -1,7 +1,6 @@
 // noinspection SpellCheckingInspection
 
 import { useState, useEffect } from 'react'
-import './TextLoadingAnimation.scss'
 
 export interface RandomSymbolAnimationConfig {
   locale?: 'ru' | 'en'
@@ -24,7 +23,13 @@ export function useRandomSymbolAnimation (
   const numericalSymbols = '0123456789'
   const specialSymbols = '!@#$%^&*'
 
-  const { alpha = true, locale = 'ru', num = true, special = true, textCase = 'as-typed' } = config
+  const {
+    alpha = true,
+    locale = 'ru',
+    num = true,
+    special = true,
+    textCase = 'as-typed'
+  } = config
 
   if (alpha) {
     if (textCase === 'upper') {

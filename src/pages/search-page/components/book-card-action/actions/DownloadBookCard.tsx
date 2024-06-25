@@ -17,7 +17,6 @@ const DownloadBookCardAction: React.FC<{ id: string, title: string }> = (props) 
 
       if (statusCode === 200) {
         downloadFile(data, `${filename}.fb2`)
-        // navigate(location.replace('/book', '/search'))
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {

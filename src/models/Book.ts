@@ -7,4 +7,6 @@ export interface Book {
   // TODO Mind keeping files
   files: any[]
   isbn: string
+  score: number
+  votersNumber: number
 }

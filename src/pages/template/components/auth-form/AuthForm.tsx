@@ -10,7 +10,6 @@ const AuthForm: React.FC = () => {
   const signIn = useBoundStore(state => state.signIn)
 
   const onSubmit = (data: any): void => {
-    console.log(data)
     void signIn(data)
   }
 

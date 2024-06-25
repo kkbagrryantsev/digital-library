@@ -33,7 +33,9 @@
   "include": [
     "src",
     ".eslintrc.cjs",
-    "vite.config.ts"
+    "vite.config.ts",
+    "tailwind.config.js",
+    "postcss.config.js"
   ],
   "references": [
     {

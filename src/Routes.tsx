@@ -27,7 +27,7 @@ const Routes: React.FC = () => {
   const checkAuthentication = useBoundStore((state) => state.checkAuthentication)
 
   useEffect(() => {
-    void checkAuthentication()
+    // void checkAuthentication()
   }, [checkAuthentication])
 
   return (

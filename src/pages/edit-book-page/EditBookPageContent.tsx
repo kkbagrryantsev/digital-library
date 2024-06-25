@@ -16,7 +16,7 @@ import {
 import useBoundStore from '~/store/useBoundStore.ts'
 import { ComponentWithLoader } from '~/components/component-with-loader/ComponentWithLoader.tsx'
 import classnames from 'classnames'
-import { useRandomSymbolAnimation } from '~/components/text-loading-animation/TextLoadingAnimation.tsx'
+import { useRandomSymbolAnimation } from '~/hooks/useRandomSymbolAnimation.tsx'
 import AutoResizableTextArea from '~/components/auto-resizable-textarea/AutoResizableTextArea.tsx'
 import { LoadingState } from '~/enums/LoadingState.ts'
 import { BookAction } from '~/shared/book-action/BookAction.tsx'

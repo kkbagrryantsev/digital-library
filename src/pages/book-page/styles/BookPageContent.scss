@@ -1,14 +1,16 @@
+@import "../../../styles/Fonts";
 @import "../../../styles/Commons";
 
 .bookPageContent {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   gap: 87px;
+  height: 90vh;
   //max-width: 1024px;
   //min-width: 800px;
   //TODO Convert to rem
-  padding: 50px 70px;
+  padding: 30px 60px;
   box-sizing: border-box;
 }
 
@@ -23,7 +25,7 @@
 }
 
 .actions {
-  width: 100%;
+  width: 700px;
 
   display: flex;
   flex-direction: column;
@@ -51,9 +53,19 @@
   @extend h4;
   @extend %droid-serif-regular;
   width: 100%;
+  height: 100%;
+  overflow: hidden;
+  line-break: anywhere;
+  text-overflow: ellipsis;
 }
 
 .isbn {
+  @extend h4;
+  @extend %droid-serif-regular;
+  color: $gray;
+}
+
+.score {
   @extend h4;
   @extend %droid-serif-regular;
   color: $gray;

@@ -103,13 +103,13 @@ const BookDescription: React.FC = () => {
 
 const BookISBN: React.FC = () => {
   return (
-      <BookDataInputField
-        name={'isbn'}
-        defaultValue={''}
-        className={'isbn'}
-        placeholder={'ISBN'}
-        required
-      />
+    <BookDataInputField
+      name={'isbn'}
+      defaultValue={''}
+      className={'isbn'}
+      placeholder={'ISBN'}
+      required
+    />
   )
 }
 
@@ -122,7 +122,7 @@ const AddBookActionButton: React.FC<{ handleSubmit: any }> = props => {
     try {
       setAddState('добавляется')
 
-      const response = await apiAddBook(bookData)
+      const response = await apiAddBook({ ...bookData, score: 0, votersNumber: 0 })
 
       const data = response.data
       const statusCode = response.status
@@ -137,8 +137,13 @@ const AddBookActionButton: React.FC<{ handleSubmit: any }> = props => {
           const response = error.response
           const statusCode = response.status
           setAddState(`не удалось добавить книгу (${statusCode})`)
+        } else {
+          setAddState('не удалось добавить книгу')
         }
       }
+      setTimeout(() => {
+        setAddState('')
+      }, 2000)
     }
   }
 
@@ -174,7 +179,7 @@ export const NewBookPageContent: React.FC = () => {
           <BookDescription />
           <div className={'actions'}></div>
           <BookISBN />
-          <AddBookActionButton handleSubmit={methods.handleSubmit}/>
+          <AddBookActionButton handleSubmit={methods.handleSubmit} />
         </form>
       </FormProvider>
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}

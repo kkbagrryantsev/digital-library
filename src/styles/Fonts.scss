@@ -46,3 +46,65 @@
   font-weight: bold;
   font-style: italic;
 }
+
+@mixin font($family, $weight, $style) {
+  font-family: $family;
+  font-weight: $weight;
+  font-style: $style;
+}
+
+%droid-serif-regular {
+  @include font("Droid Serif", normal, normal);
+}
+
+.droid-serif-regular {
+  @extend %droid-serif-regular;
+}
+
+%droid-serif-bold {
+  @include font('Droid Serif', bold, normal)
+}
+
+.droid-serif-bold {
+  @extend %droid-serif-bold;
+}
+
+%droid-serif-italic {
+  @include font('Droid Serif', normal, italic)
+}
+
+.droid-serif-italic {
+  @extend %droid-serif-italic;
+}
+
+%droid-serif-bold-italic {
+  @include font('Droid Serif', bold, italic)
+}
+
+.droid-serif-bold-italic {
+  @extend %droid-serif-bold-italic;
+}
+
+%roboto-regular {
+  @include font('Roboto', normal, normal)
+}
+
+.roboto-regular {
+  @extend %roboto-regular;
+}
+
+%roboto-bold {
+  @include font('Roboto', bold, normal)
+}
+
+.roboto-bold {
+  @extend %roboto-bold;
+}
+
+%roboto-black {
+  @include font('Roboto', 900, normal)
+}
+
+.roboto-black {
+  @extend %roboto-black;
+}
